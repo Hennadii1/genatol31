@@ -51,10 +51,11 @@ class Weather:
         return self
 
     def __next__(self):
-        if self.counter <= len(Weather.read_file()):
+        if self.counter < len(Weather.read_file()):
+            n = self.counter
             line = Weather.read_file()
             self.counter = self.counter + 1
-            return line[self.counter]
+            return line[n]
         else:
             raise StopIteration
 
@@ -65,10 +66,12 @@ class Weather:
             line = next(self).split('/')
         return line
 
-
+    def weather_output(self):
+        print(self.get_weather())
 
 
 
 
 weather = Weather('4.00')
-print(weather.get_weather())
+
+weather.weather_output()
