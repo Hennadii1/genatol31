@@ -1,31 +1,51 @@
-# Задача: программа предваительного расчета стоимости кухни.
-# пользовтеля просят пошагово вести некоторые данные:
-# 1. Контактные данные, которые являются приватными (имя, номер тедефона, e_mail).
-# 2. Тип кухни (прмая или угловая).
-# 3. Длину кухни (если прямая - 1 длина, если угловая - 2 длины).
-# 4. Тип фурниуры (бюжетная, цена/качество, брендовая).
-# 5. Тип фасада (обычный, крашенные, массив дерева).
-# Есть фиксирваная цена за 1 м/п кухни, тип фурнитуры и тип фасада влияют на цену путем добавления коэффициента увеличения цены.
-# При этом бюджетная фурнитура и обычный фасад имеют коээф. 1.
+class InputData:
+    def __init__(self, data):
+        self.data = list(data)
 
-class Kitchen:
 
-    def __init__(self, name, phone, e_mail, kitchen_type, fittings_type, facade_type):
-        self.__name = name
-        self.__phone = phone
-        self.__e_mail = e_mail
-        self.kitchen_type = kitchen_type
-        self.fittings_type = fittings_type
-        self.facade_type = facade_type
 
-    def personal_data_input(self):
-        self.__name = input('Введите Ваше имя: ')
-        self.__phone = input('Введите Ваш номер телефона: ')
-        self.__e_mail = input('Введите Ваш адрес электронной почты: ')
-        return self.__name, self.__phone, self.__e_mail
+    @staticmethod
+    def input_data_file():
+        data = []
+        file_name = 'input_data'
+        with open(file_name) as f:
+           for i in f:
+               data.append(i)
+        return data
 
-    def kitchen_data_input(self):
-        self.kitchen_type = input('Введите тип кухни: 1 - прямая, 2 - угловая ...-')
-        self.fittings_type = input('Введите тип фурнитуры: 1 - бюджет, 2 - цена/качество, 3 - бренд ...-')
-        self.facade_type = input('Введите тип фасада: 1 - обычные, 2 - крашеные, 3 - дерево ...-')
-        return self.kitchen_type, self.fittings_type, self.facade_type
+    def tranformation_data(self):
+        x = []
+        y = []
+        for i in InputData.input_data_file():
+            data = i.split('/')
+            x.append(float(data[1]))
+            y.append(float(data[0]))
+        return y, x
+
+
+class FilterData(InputData):
+    def tranformation_data(self):
+        filter_x = []
+        for i in range(len(self.tranformation_data()[0])-1):
+            item = (self.tranformation_data()[0][i] + self.tranformation_data()[0][i+1])/2
+            filter_x.append(item)
+        return filter_x
+
+    def data_output(self):
+        file_name = 'data_output'
+        with open(file_name, 'a') as f:
+            f.write('X' + '\t\t' + 'Y' + '\n\n')
+            f.write(str(self.tranformation_data()[0][0]) + '\t\t' + str(self.tranformation_data()[1][0]) + '\n')
+            for i in range(len(self.tranformation_data()[0])-1):
+                f.write(str(self.tranformation_data()[0][i]) + '\t\t' + str(self.tranformation_data()[1][i+1]) + '\n')
+
+
+
+
+object1 = InputData(InputData.input_data_file())
+filter1 = FilterData
+filter1.tranformation_data(object1)
+filter1.data_output(object1)
+
+# print(object1.tranformation_data()[0])
+# print(object1.tranformation_data()[1])
