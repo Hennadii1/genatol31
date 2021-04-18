@@ -3,9 +3,10 @@
 В файде записана построчно функция y(x) в ыиде "значение Y / значение х"
 Необходимо считать с файла данные и записать в отдельные массивы значения x и y.
 Затем сделать преобразования с значениями и записать результат в файл.
-
+Построить график новой функции
 """
-
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 class InputData:
@@ -75,5 +76,10 @@ object1.tranformation_data()
 
 FilterData.tranformation_data_new(object1)
 FilterData.data_output(object1)
-
-
+"""
+Строим график функции
+"""
+x = FilterData.tranformation_data(object1)[1]
+y = FilterData.tranformation_data_new(object1)
+plt.plot(x,y)
+plt.show()
