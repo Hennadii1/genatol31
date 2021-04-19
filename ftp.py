@@ -1,4 +1,5 @@
 from ftplib import FTP
+import threading
 # ftp = FTP('ftp.us.debian.org')
 # ftp.login()
 #
@@ -32,7 +33,8 @@ class FTPdownload:
 
         for i in data:
             with open(i, 'wb') as fp:
-                self.ftp.retrbinary('RETR ' + i, fp.write)
+                t = threading.Thread(target = self.ftp.retrbinary, args= ('RETR ' + i, fp.write),)
+                t.start()
         self.ftp.quit()
 
 
